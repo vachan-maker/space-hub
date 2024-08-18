@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kimeiga/bahunya/dist/bahunya.min.css">
+    <title>Space Hub</title>
+    <style>
+            iframe {
+                aspect-ratio: 16 / 9;
+                width: 100% !important;
+            }
+    </style>
+</head>
+<body onload="fetchData()">
+    <header>
+        <nav>
+                 <ul>
+                   <li><strong>Space Hub</strong></li>
+                 </ul>
+                 <ul>
+                   <li><a href="index.html" class="contrast">APOD</a></li>
+                   <li><a href="epic.html" class="contrast">EPIC</a></li>
+                   <li><a href="iss.html" class="contrast">ISS Tracker</a></li>
+                 </ul>
+               </nav>
+     </header>
+    <main>
+        <h2>Astronomy Picture of the Day(APOD)</h2>
+        <article>
+        <header>
+        <h3 id="apod-title"></h3>
+        <p><b id="apod-date"></b></p>
+        </header>
+        <img src="" id="apod-image" style="display: none;"/>
+        <iframe id="apod-video"
+        src="" style="display: none;">
+        </iframe> 
+        <p id="apod-description"></p>
+        </article>
+        <section>
+            <form>
+                <label for = "apod-dateInput">
+                    Enter a date to see the image on a particular day
+                </label>
+                <input type="date" id="apod-dateInput"/>
+            </form>
+            <button onclick="fetchData()">Go!</button>
+        </section>
+    </main>
+    <script>
+        async function fetchData() {
+            const user_date = document.getElementById("apod-dateInput").value || '';
+            console.log(user_date);
+            const api_key = '4nin6GMZtTmHZc0sJKECqidNSfQBwvqdy33ezKL0';
+            try {
+                const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${api_key}&date=${user_date}`);
+                if (!response.ok) {
+                    throw new Error("Could not fetch resource");
+                }
+                const data = await response.json();
+                console.log(data);
+                const titleElement = document.getElementById("apod-title");
+                titleElement.innerText = data.title;
+                const apodImage = data.url;
+                if(data.media_type == 'video')
+                {
+                    const videoElement = document.getElementById("apod-video");
+                    videoElement.src = data.url;
+                    videoElement.style.display = "block";
+                }
+                else {
+                videoElement.style.display = "none";
+                const imageElement = document.getElementById("apod-image");
+                imageElement.src = apodImage;
+                imageElement.style.display = "block";
+                }
+                const descriptionElement = document.getElementById("apod-description");
+                descriptionElement.innerText = data.explanation;
+                const apodDate = data.date;
+                const apodDateObject = new Date(apodDate);
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                const longDate = apodDateObject.toLocaleDateString('en-GB', options);
+                const dateElement = document.getElementById('apod-date');
+                dateElement.innerText = longDate;
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    </script>
+    
+</body>
+</html>

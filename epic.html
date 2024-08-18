@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kimeiga/bahunya/dist/bahunya.min.css">
+    <title>Space Hub</title>
+</head>
+<body>
+    <header>
+   <nav>
+            <ul>
+              <li><strong>Space Hub</strong></li>
+            </ul>
+            <ul>
+              <li><a href="#" class="contrast">Astronomy Picture of the Day</a></li>
+              <li><a href="#" class="contrast">Earth Polychromatic Imaging Camera</a></li>
+              <li><a href="#" class="contrast">ISS Tracker</a></li>
+            </ul>
+          </nav>
+</header>
+    <main>
+        <article>
+        <header>
+        <h2>Earth Polychromatic Imaging Camera</h2>
+        <h3 id="epic-title"></h3>
+        <b id="epic-date"></b>
+        </header>
+        <img src="" id="epic-image" style="display: none;"/>
+        <p id="epic-description"></p>
+        </article>
+        <section>
+            <form>
+                <label for = "epic-date">
+                    Enter a date to see the image on a particular day
+                </label>
+                <input type="date" id="epic-dateInput"/>
+            </form>
+            <button onclick="fetchData()">Go!</button>
+        </section>
+    </main>
+    <script>
+        async function fetchData() {
+            try {
+                const response = await fetch(`https://epic.gsfc.nasa.gov/api/natural`);
+                if (!response.ok) {
+                    throw new Error("Could not fetch resource");
+                }
+                const data = await response.json();
+                var epicDate = new Date(data[2].date);
+                console.log(epicDate);
+                console.log(epicDate.getFullYear());
+
+                const titleElement = document.getElementById("epic-title");
+                titleElement.innerText = data.title;
+                epicImageURL = data[0].image;
+                const epicImage = `https://epic.gsfc.nasa.gov/archive/natural/${epicDate.getFullYear()}/0${epicDate.getMonth()+1}/${epicDate.getDate()}/png/${epicImageURL}.png` ;
+                const imageElement = document.getElementById("epic-image");
+                imageElement.src = epicImage;
+                imageElement.style.display = "block";
+                const descriptionElement = document.getElementById("epic-description");
+                descriptionElement.innerText = data[2].caption;
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    </script>
+    
+</body>
+</html>
