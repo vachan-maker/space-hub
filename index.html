@@ -48,6 +48,9 @@
             <button onclick="fetchData()">Go!</button>
         </section>
     </main>
+    <footer>
+        <p>Data from <a href="https://api.nasa.gov">NASA Open API</a></p>
+    </footer>
     <script>
         async function fetchData() {
             const user_date = document.getElementById("apod-dateInput").value || '';
