@@ -63,9 +63,9 @@
                 const titleElement = document.getElementById("apod-title");
                 titleElement.innerText = data.title;
                 const apodImage = data.url;
+                const videoElement = document.getElementById("apod-video");
                 if(data.media_type == 'video')
                 {
-                    const videoElement = document.getElementById("apod-video");
                     videoElement.src = data.url;
                     videoElement.style.display = "block";
                 }
