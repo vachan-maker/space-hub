@@ -23,7 +23,6 @@
         <article>
         <header>
         <h2>Earth Polychromatic Imaging Camera</h2>
-        <h3 id="epic-title"></h3>
         <b id="epic-date"></b>
         </header>
         <img src="" id="epic-image" style="display: none;"/>
@@ -43,11 +42,8 @@
                 }
                 const data = await response.json();
                 var epicDate = new Date(data[5].date);
-                console.log(epicDate);
-                console.log(epicDate.getFullYear());
-
-                const titleElement = document.getElementById("epic-title");
-                titleElement.innerText = data.title;
+                const epicDateElement = document.getElementById('epic-date');
+                epicDateElement.innerText = epicDate; 
                 epicImageURL = data[5].image;
                 const epicImage = `https://api.nasa.gov/EPIC/archive/natural/${epicDate.getFullYear()}/${('0'+ (epicDate.getMonth()+1)).slice(-2)}/${epicDate.getDate()}/png/${epicImageURL}.png?api_key=${api_key}` ;
                 const imageElement = document.getElementById("epic-image");
