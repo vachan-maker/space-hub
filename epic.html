@@ -48,12 +48,13 @@
                 const titleElement = document.getElementById("epic-title");
                 titleElement.innerText = data.title;
                 epicImageURL = data[0].image;
-                const epicImage = `https://epic.gsfc.nasa.gov/archive/natural/${epicDate.getFullYear()}/0${epicDate.getMonth()+1}/${epicDate.getDate()}/png/${epicImageURL}.png` ;
+                const epicImage = `https://epic.gsfc.nasa.gov/archive/natural/${epicDate.getFullYear()}/${('0'+ (epicDate.getMonth()+1)).slice(-2)}/${epicDate.getDate()}/png/${epicImageURL}.png` ;
                 const imageElement = document.getElementById("epic-image");
                 imageElement.src = epicImage;
                 imageElement.style.display = "block";
                 const descriptionElement = document.getElementById("epic-description");
                 descriptionElement.innerText = data[2].caption;
+                console.log(data);
             } catch (error) {
                 console.error(error);
             }
